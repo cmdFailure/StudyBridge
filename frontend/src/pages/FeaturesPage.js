@@ -82,8 +82,8 @@ export const FeaturesPage = () => {
                 data-testid={`feature-card-${idx}`}
                 className="premium-card rounded-2xl p-8 card-lift border border-white/10 group stagger-item"
               >
-                <div className="bg-blue-500/10 w-16 h-16 rounded-xl flex items-center justify-center mb-6">
-                  <Icon className="w-8 h-8 text-blue-400" />
+                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} mb-6 group-hover:scale-110 transition-transform shadow-lg`}>
+                  <Icon className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-4" style={{ fontFamily: 'Manrope, sans-serif' }}>
                   {feature.title}
