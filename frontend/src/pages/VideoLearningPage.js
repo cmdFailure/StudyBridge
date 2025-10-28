@@ -22,14 +22,14 @@ export const VideoLearningPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
       <div className="container mx-auto px-4 py-8">
         {/* Page Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-purple-500/20 border border-purple-500/30 rounded-full px-4 py-2 mb-4">
-            <Video className="w-4 h-4 text-purple-400" />
+        <div className="text-center mb-12 animate-slide-in-up">
+          <div className="inline-flex items-center gap-2 glass border border-purple-500/30 rounded-full px-4 py-2 mb-4 hover-scale">
+            <Video className="w-4 h-4 text-purple-400 animate-pulse-custom" />
             <span className="text-purple-300 text-sm font-medium">Video Learning</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Transform Videos into
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 animate-gradient">
               Accessible Learning
             </span>
           </h1>
