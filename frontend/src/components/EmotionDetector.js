@@ -24,13 +24,13 @@ export const EmotionDetector = () => {
   const getEmotionIcon = () => {
     switch (emotion) {
       case 'happy':
-        return <Smile className=\"w-8 h-8 text-green-400\" />;
+        return <Smile className="w-8 h-8 text-green-400" />;
       case 'focused':
-        return <Brain className=\"w-8 h-8 text-blue-400\" />;
+        return <Brain className="w-8 h-8 text-blue-400" />;
       case 'tired':
-        return <Frown className=\"w-8 h-8 text-orange-400\" />;
+        return <Frown className="w-8 h-8 text-orange-400" />;
       default:
-        return <Meh className=\"w-8 h-8 text-slate-400\" />;
+        return <Meh className="w-8 h-8 text-slate-400" />;
     }
   };
 
