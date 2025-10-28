@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/sonner';
 import { Header } from '@/components/Header';
 import { LandingPage } from '@/pages/LandingPage';
 import { FeaturesPage } from '@/pages/FeaturesPage';
+import { AdvancedFeaturesPage } from '@/pages/AdvancedFeaturesPage';
 import { UploadPage } from '@/pages/UploadPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { ProfilePage } from '@/pages/ProfilePage';
