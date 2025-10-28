@@ -3,12 +3,29 @@ import { Button } from './ui/button';
 import { Play, Pause, SkipBack, SkipForward, Volume2 } from 'lucide-react';
 import { Slider } from './ui/slider';
 
-export const TTSPlayer = ({ text, profile }) => {
+export const TTSPlayer = ({ text, profile, useSimplified }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(profile?.preferences?.ttsSpeed || 1.0);
   const [voices, setVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState(null);
   const utteranceRef = useRef(null);
+
+  // Clean text for TTS - remove markdown formatting
+  const cleanTextForTTS = (rawText) => {
+    if (!rawText) return '';
+    
+    return rawText
+      .replace(/\*\*/g, '') // Remove bold markdown
+      .replace(/\*/g, '')   // Remove italic markdown
+      .replace(/#{1,6}\s/g, '') // Remove heading markers
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Convert links to plain text
+      .replace(/`{1,3}/g, '') // Remove code markers
+      .replace(/^\s*[-•]\s/gm, '') // Remove bullet points
+      .replace(/\n{3,}/g, '\n\n') // Normalize line breaks
+      .trim();
+  };
+
+  const cleanedText = cleanTextForTTS(text);
 
   useEffect(() => {
     const loadVoices = () => {
