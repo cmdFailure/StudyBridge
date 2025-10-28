@@ -10,12 +10,15 @@ import { UploadPage } from '@/pages/UploadPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { VideoLearningPage } from '@/pages/VideoLearningPage';
+import { ResourcesPage } from '@/pages/ResourcesPage';
+import { VoiceCommandController } from '@/components/VoiceCommandController';
 
 function App() {
   return (
     <BrowserRouter>
       <div className="min-h-screen">
         <Header />
+        <VoiceCommandController />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/features" element={<FeaturesPage />} />
@@ -24,6 +27,7 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/video-learning" element={<VideoLearningPage />} />
+          <Route path="/resources" element={<ResourcesPage />} />
         </Routes>
         <Toaster position="top-right" richColors />
       </div>
