@@ -12,6 +12,7 @@ import { AccessibilityToolbar } from '../components/AccessibilityToolbar';
 import { FocusMode } from '../components/FocusMode';
 import { SignLanguageInterpreter } from '../components/SignLanguageInterpreter';
 import { ReadingGuide, KeyboardNavigationGuide, ColorBlindFilter, LiveCaptions } from '../components/InteractiveAccessibility';
+import { AdvancedAccessibilityFeatures } from '../components/AdvancedAccessibilityFeatures';
 import { apiService } from '../services/apiService';
 import { getStoredProfile, saveProfile as saveProfileToStorage } from '../utils/accessibility';
 import { toast } from 'sonner';
