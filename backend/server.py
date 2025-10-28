@@ -194,6 +194,45 @@ Return only valid JSON array like: [{{"question": "...", "options": ["A", "B", "
         logging.error(f"Study aids generation error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error generating study aids: {str(e)}")
 
+@api_router.post("/translate-content")
+async def translate_content(request: TranslateRequest):
+    """Translate content to specified language using Gemini AI"""
+    try:
+        if not gemini_key:
+            return JSONResponse(
+                status_code=400,
+                content={"error": "Gemini API key not configured"}
+            )
+        
+        language_names = {
+            "zh": "Mandarin Chinese",
+            "hi": "Hindi",
+            "ar": "Arabic"
+        }
+        
+        target_lang = language_names.get(request.target_language, "English")
+        
+        model = genai.GenerativeModel('gemini-2.0-flash')
+        
+        prompt = f"""Translate the following text to {target_lang}. Maintain the meaning and context accurately.
+
+Original Text:
+{request.content[:3000]}
+
+Provide only the translated text without any additional commentary."""
+        
+        response = model.generate_content(prompt)
+        
+        return {
+            "translated_text": response.text,
+            "target_language": request.target_language,
+            "language_name": target_lang
+        }
+        
+    except Exception as e:
+        logging.error(f"Translation error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error translating content: {str(e)}")
+
 # Include router
 app.include_router(api_router)
 
