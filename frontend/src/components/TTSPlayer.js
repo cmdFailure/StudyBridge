@@ -87,7 +87,12 @@ export const TTSPlayer = ({ text, profile, useSimplified }) => {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <Volume2 className="w-6 h-6 text-sky-500" aria-hidden="true" />
-          <h3 className="text-xl font-bold text-slate-800">Text-to-Speech</h3>
+          <h3 className="text-xl font-bold text-slate-800">
+            Text-to-Speech
+            {useSimplified && (
+              <span className="ml-2 text-sm font-normal text-emerald-600">(Simplified Version)</span>
+            )}
+          </h3>
         </div>
       </div>
 
