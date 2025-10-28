@@ -22,19 +22,24 @@ export const ContentSimplifier = ({ originalText, simplifiedText, onSimplify, is
 
   return (
     <div className="space-y-6" data-testid="content-simplifier">
-      <div className="bg-white rounded-2xl shadow-md border border-slate-200 p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold text-slate-800" id="original-content-heading">
-            Original Content
-          </h3>
+      <div className="premium-card rounded-2xl border border-white/10 p-8 card-lift">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+              <Wand2 className="w-6 h-6 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-white" id="original-content-heading">
+              Original Content
+            </h3>
+          </div>
         </div>
         
         <div 
-          className="prose max-w-none text-slate-700 max-h-96 overflow-y-auto p-4 bg-slate-50 rounded-xl"
+          className="prose max-w-none text-gray-300 max-h-96 overflow-y-auto p-6 bg-gray-900/50 rounded-xl border border-gray-800"
           aria-labelledby="original-content-heading"
           data-testid="original-text-display"
         >
-          <p className="whitespace-pre-wrap">{originalText.substring(0, 1500)}...</p>
+          <p className="whitespace-pre-wrap leading-relaxed">{originalText.substring(0, 1500)}...</p>
         </div>
 
         {!simplifiedText && (
@@ -42,7 +47,7 @@ export const ContentSimplifier = ({ originalText, simplifiedText, onSimplify, is
             data-testid="simplify-content-btn"
             onClick={onSimplify}
             disabled={isSimplifying}
-            className="mt-4 w-full bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white py-6 text-base rounded-xl font-semibold"
+            className="mt-6 w-full cyber-button text-white py-7 text-lg rounded-2xl font-bold"
           >
             {isSimplifying ? (
               <>
@@ -52,7 +57,7 @@ export const ContentSimplifier = ({ originalText, simplifiedText, onSimplify, is
             ) : (
               <>
                 <Wand2 className="w-5 h-5 mr-2" aria-hidden="true" />
-                Simplify Content
+                Simplify Content with AI
               </>
             )}
           </Button>
