@@ -40,29 +40,29 @@ export const VideoLearningPage = () => {
 
         {!videoData ? (
           // Upload Section
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-3xl mx-auto animate-slide-in-up" style={{animationDelay: '0.2s'}}>
             <VideoUploader onVideoProcessed={handleVideoProcessed} />
             
             {/* Features Preview */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 text-center">
-                <div className="bg-blue-500/20 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3">
+              <div className="glass border border-slate-700 rounded-xl p-6 text-center hover-scale stagger-item">
+                <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3 animate-pulse-custom">
                   <FileText className="w-6 h-6 text-blue-400" />
                 </div>
                 <h3 className="text-white font-semibold mb-2">AI Transcription</h3>
                 <p className="text-slate-400 text-sm">Automatic transcription with timestamps</p>
               </div>
               
-              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 text-center">
-                <div className="bg-purple-500/20 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3">
+              <div className="glass border border-slate-700 rounded-xl p-6 text-center hover-scale stagger-item">
+                <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3 animate-pulse-custom">
                   <Volume2 className="w-6 h-6 text-purple-400" />
                 </div>
                 <h3 className="text-white font-semibold mb-2">Live Captions</h3>
                 <p className="text-slate-400 text-sm">Real-time captions on video</p>
               </div>
               
-              <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 text-center">
-                <div className="bg-green-500/20 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3">
+              <div className="glass border border-slate-700 rounded-xl p-6 text-center hover-scale stagger-item">
+                <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3 animate-pulse-custom">
                   <Languages className="w-6 h-6 text-green-400" />
                 </div>
                 <h3 className="text-white font-semibold mb-2">All Features</h3>
