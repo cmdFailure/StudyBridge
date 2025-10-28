@@ -13,10 +13,11 @@ import { FocusMode } from '../components/FocusMode';
 import { SignLanguageInterpreter } from '../components/SignLanguageInterpreter';
 import { ReadingGuide, KeyboardNavigationGuide, ColorBlindFilter, LiveCaptions } from '../components/InteractiveAccessibility';
 import { AdvancedAccessibilityFeatures } from '../components/AdvancedAccessibilityFeatures';
+import { AITutorChat } from '../components/AITutorChat';
 import { apiService } from '../services/apiService';
 import { getStoredProfile, saveProfile as saveProfileToStorage } from '../utils/accessibility';
 import { toast } from 'sonner';
-import { FileText, ArrowLeft } from 'lucide-react';
+import { FileText, ArrowLeft, Bot } from 'lucide-react';
 import { Button } from '../components/ui/button';
 
 export const DashboardPage = () => {
@@ -26,6 +27,7 @@ export const DashboardPage = () => {
   const [simplifiedText, setSimplifiedText] = useState('');
   const [isSimplifying, setIsSimplifying] = useState(false);
   const [simplifiedScore, setSimplifiedScore] = useState(0);
+  const [showAITutor, setShowAITutor] = useState(false);
   
   // Interactive accessibility features
   const [accessibilityFeatures, setAccessibilityFeatures] = useState({
