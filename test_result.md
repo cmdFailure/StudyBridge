@@ -205,6 +205,54 @@ frontend:
         agent: "main"
         comment: "Removed offline mode section and related state/functions from AdvancedAccessibilityFeatures component as per user request."
 
+  - task: "VideoPlayer component with live captions"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/VideoPlayer.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created custom video player with live captions overlay, playback controls (play/pause, volume, seek), speed controls (0.5x, 1x, 1.5x, 2x), captions toggle, fullscreen, and clickable timestamp navigation. Captions update based on video currentTime and transcript segments."
+
+  - task: "VideoUploader component"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/VideoUploader.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created video uploader with two modes: local file upload and YouTube URL input. Handles video upload, calls transcription API, displays processing status. Includes file validation and size limits (100MB)."
+
+  - task: "VideoLearningPage"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/VideoLearningPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Created video learning page that integrates VideoUploader, VideoPlayer, ContentSimplifier, TTSPlayer, and AdvancedAccessibilityFeatures. Two-column layout: video player + transcript on left, accessibility features on right. Allows simplification and accessibility features to be applied to video transcript."
+
+  - task: "Navigation and routing for video learning"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js, /app/frontend/src/components/Header.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added /video-learning route to App.js and 'Video Learning' link to Header navigation."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
