@@ -19,8 +19,18 @@ export const VideoLearningPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      {/* Animated Gradient Background */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-pink-500/10"></div>
+        <div className="absolute top-40 left-20 w-96 h-96 bg-gradient-to-br from-purple-500/30 to-transparent rounded-full blur-3xl animate-pulse-custom pointer-events-none"></div>
+        <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-br from-blue-500/30 to-transparent rounded-full blur-3xl animate-pulse-custom pointer-events-none" style={{animationDelay: '1s'}}></div>
+      </div>
+
+      {/* Grid Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+
+      <div className="container mx-auto px-4 py-8 relative">
         {/* Page Header */}
         <div className="text-center mb-12 animate-slide-in-up">
           <div className="inline-flex items-center gap-2 glass border border-purple-500/30 rounded-full px-4 py-2 mb-4 hover-scale">
