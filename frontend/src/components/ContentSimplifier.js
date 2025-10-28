@@ -65,55 +65,61 @@ export const ContentSimplifier = ({ originalText, simplifiedText, onSimplify, is
       </div>
 
       {simplifiedText && (
-        <div className="bg-gradient-to-br from-emerald-50 to-sky-50 rounded-2xl shadow-md border-2 border-emerald-200 p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h3 className="text-xl font-bold text-slate-800" id="simplified-content-heading">
-                Simplified Content
-              </h3>
-              <p className="text-sm text-slate-600 mt-1">
-                Adapted for {profile?.disabilities[0] || 'general'} accessibility
-              </p>
+        <div className="premium-card rounded-2xl border-2 border-green-500/30 p-8 card-lift relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-green-500/20 to-transparent rounded-full blur-3xl"></div>
+          <div className="relative">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                  <Check className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white" id="simplified-content-heading">
+                    Simplified Content
+                  </h3>
+                  <p className="text-sm text-gray-400 mt-1">
+                    AI-adapted for {profile?.disabilities[0] || 'better'} accessibility
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  data-testid="copy-simplified-btn"
+                  onClick={handleCopy}
+                  variant="outline"
+                  className="border-green-500/50 hover:bg-green-500/20 text-white"
+                >
+                  {copied ? (
+                    <Check className="w-4 h-4 text-green-400" aria-label="Copied" />
+                  ) : (
+                    <Copy className="w-4 h-4" aria-label="Copy to clipboard" />
+                  )}
+                </Button>
+                <Button
+                  data-testid="regenerate-simplified-btn"
+                  onClick={onSimplify}
+                  disabled={isSimplifying}
+                  variant="outline"
+                  className="border-green-500/50 hover:bg-green-500/20 text-white"
+                >
+                  <RefreshCw className={`w-4 h-4 ${isSimplifying ? 'animate-spin' : ''}`} aria-label="Regenerate" />
+                </Button>
+              </div>
             </div>
-            <div className="flex gap-2">
-              <Button
-                data-testid="copy-simplified-btn"
-                onClick={handleCopy}
-                variant="outline"
-                size="sm"
-                className="border-emerald-300 hover:bg-emerald-100"
-              >
-                {copied ? (
-                  <Check className="w-4 h-4 text-emerald-600" aria-label="Copied" />
-                ) : (
-                  <Copy className="w-4 h-4" aria-label="Copy to clipboard" />
-                )}
-              </Button>
-              <Button
-                data-testid="regenerate-simplified-btn"
-                onClick={onSimplify}
-                disabled={isSimplifying}
-                variant="outline"
-                size="sm"
-                className="border-emerald-300 hover:bg-emerald-100"
-              >
-                <RefreshCw className={`w-4 h-4 ${isSimplifying ? 'animate-spin' : ''}`} aria-label="Regenerate" />
-              </Button>
+            
+            <div 
+              className="prose max-w-none text-gray-200 max-h-96 overflow-y-auto p-6 bg-gray-900/50 rounded-xl border border-green-500/20 shadow-lg"
+              style={{
+                fontSize: `${profile?.visualNeeds?.fontSize || 16}px`,
+                fontFamily: profile?.visualNeeds?.fontFamily || 'Inter',
+                lineHeight: profile?.visualNeeds?.lineSpacing || 1.6,
+                letterSpacing: `${profile?.visualNeeds?.letterSpacing || 0}px`
+              }}
+              aria-labelledby="simplified-content-heading"
+              data-testid="simplified-text-display"
+            >
+              <p className="whitespace-pre-wrap leading-relaxed">{simplifiedText}</p>
             </div>
-          </div>
-          
-          <div 
-            className="prose max-w-none text-slate-800 max-h-96 overflow-y-auto p-6 bg-white rounded-xl shadow-sm"
-            style={{
-              fontSize: `${profile?.visualNeeds?.fontSize || 16}px`,
-              fontFamily: profile?.visualNeeds?.fontFamily || 'Inter',
-              lineHeight: profile?.visualNeeds?.lineSpacing || 1.6,
-              letterSpacing: `${profile?.visualNeeds?.letterSpacing || 0}px`
-            }}
-            aria-labelledby="simplified-content-heading"
-            data-testid="simplified-text-display"
-          >
-            <p className="whitespace-pre-wrap">{simplifiedText}</p>
           </div>
         </div>
       )}
