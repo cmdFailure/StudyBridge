@@ -144,7 +144,11 @@ export const VideoUploader = ({ onVideoProcessed }) => {
         <Button
           onClick={() => setUploadMode('file')}
           variant={uploadMode === 'file' ? 'default' : 'outline'}
-          className={uploadMode === 'file' ? 'bg-blue-500' : 'border-slate-600'}
+          className={`btn-interactive transition-all ${
+            uploadMode === 'file' 
+              ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg shadow-blue-500/50' 
+              : 'border-slate-600 hover:border-blue-500 hover:bg-slate-800'
+          }`}
         >
           <Upload className="w-4 h-4 mr-2" />
           Upload File
@@ -152,7 +156,11 @@ export const VideoUploader = ({ onVideoProcessed }) => {
         <Button
           onClick={() => setUploadMode('youtube')}
           variant={uploadMode === 'youtube' ? 'default' : 'outline'}
-          className={uploadMode === 'youtube' ? 'bg-red-500' : 'border-slate-600'}
+          className={`btn-interactive transition-all ${
+            uploadMode === 'youtube' 
+              ? 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 shadow-lg shadow-red-500/50' 
+              : 'border-slate-600 hover:border-red-500 hover:bg-slate-800'
+          }`}
         >
           <Youtube className="w-4 h-4 mr-2" />
           YouTube URL
@@ -161,7 +169,7 @@ export const VideoUploader = ({ onVideoProcessed }) => {
 
       {/* File Upload */}
       {uploadMode === 'file' && (
-        <div className="border-2 border-dashed border-slate-600 rounded-2xl p-12 text-center hover:border-blue-500 transition">
+        <div className="border-2 border-dashed border-slate-600 rounded-2xl p-12 text-center hover:border-blue-500 hover:bg-blue-500/5 transition-all duration-300 hover-scale">
           <input
             type="file"
             id="video-upload"
@@ -175,15 +183,22 @@ export const VideoUploader = ({ onVideoProcessed }) => {
             className="cursor-pointer flex flex-col items-center gap-4"
           >
             {isProcessing ? (
-              <Loader2 className="w-16 h-16 text-blue-400 animate-spin" />
+              <div className="relative">
+                <Loader2 className="w-16 h-16 text-blue-400 animate-spin" />
+                <div className="absolute inset-0 w-16 h-16 border-4 border-blue-400/30 rounded-full animate-pulse-custom"></div>
+              </div>
             ) : (
-              <Video className="w-16 h-16 text-slate-400" />
+              <div className="relative">
+                <Video className="w-16 h-16 text-slate-400 transition-all group-hover:text-blue-400" />
+                <div className="absolute -inset-2 bg-blue-500/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              </div>
             )}
-            <div>
+            <div className="space-y-2">
               <p className="text-white text-lg font-semibold mb-1">
                 {isProcessing ? 'Processing video...' : 'Drop your video here or click to browse'}
               </p>
-              <p className="text-slate-400 text-sm">
+              <p className="text-slate-400 text-sm flex items-center gap-2 justify-center">
+                <span className="inline-block w-2 h-2 bg-green-400 rounded-full animate-pulse-custom"></span>
                 Supports MP4, WebM, MOV (Max 100MB)
               </p>
             </div>
@@ -193,20 +208,27 @@ export const VideoUploader = ({ onVideoProcessed }) => {
 
       {/* YouTube URL */}
       {uploadMode === 'youtube' && (
-        <div className="space-y-4">
+        <div className="space-y-4 animate-slide-in-up">
           <div className="flex gap-3">
-            <input
-              type="text"
-              value={youtubeUrl}
-              onChange={(e) => setYoutubeUrl(e.target.value)}
-              placeholder="Paste YouTube URL here..."
-              disabled={isProcessing}
-              className="flex-1 bg-slate-800 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-blue-500"
-            />
+            <div className="relative flex-1">
+              <input
+                type="text"
+                value={youtubeUrl}
+                onChange={(e) => setYoutubeUrl(e.target.value)}
+                placeholder="Paste YouTube URL here..."
+                disabled={isProcessing}
+                className="w-full bg-slate-800 border border-slate-600 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/50 transition-all"
+              />
+              {!isProcessing && (
+                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  <Youtube className="w-5 h-5 text-red-400 animate-pulse-custom" />
+                </div>
+              )}
+            </div>
             <Button
               onClick={handleYoutubeSubmit}
               disabled={isProcessing}
-              className="bg-red-500 hover:bg-red-600 px-6"
+              className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 px-6 btn-interactive shadow-lg shadow-red-500/50"
             >
               {isProcessing ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -226,10 +248,22 @@ export const VideoUploader = ({ onVideoProcessed }) => {
 
       {/* Processing Status */}
       {isProcessing && (
-        <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 text-center">
-          <p className="text-blue-400 text-sm">
-            Processing your video with AI... This may take a few minutes.
+        <div className="glass rounded-xl p-6 text-center border border-blue-500/30 animate-slide-in-up">
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <div className="relative">
+              <div className="w-12 h-12 border-4 border-blue-500/30 rounded-full"></div>
+              <div className="absolute inset-0 w-12 h-12 border-4 border-blue-500 rounded-full border-t-transparent animate-spin"></div>
+            </div>
+          </div>
+          <p className="text-blue-400 text-sm font-medium mb-2">
+            Processing your video with AI...
           </p>
+          <p className="text-slate-400 text-xs">
+            This may take a few minutes. Please wait.
+          </p>
+          <div className="mt-4 w-full bg-slate-700 rounded-full h-2 overflow-hidden">
+            <div className="h-full bg-gradient-to-r from-blue-500 to-purple-500 animate-gradient"></div>
+          </div>
         </div>
       )}
     </div>
