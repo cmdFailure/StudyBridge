@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Braces, Globe, Download, Wifi, WifiOff, Smartphone } from 'lucide-react';
+import { Braces, Globe, Download, Smartphone } from 'lucide-react';
 import { Button } from './ui/button';
 import { toast } from 'sonner';
 
-// Braille conversion map
+// Enhanced Braille conversion map with numbers and more characters
 const brailleMap = {
   'a': '⠁', 'b': '⠃', 'c': '⠉', 'd': '⠙', 'e': '⠑',
   'f': '⠋', 'g': '⠛', 'h': '⠓', 'i': '⠊', 'j': '⠚',
@@ -11,7 +11,11 @@ const brailleMap = {
   'p': '⠏', 'q': '⠟', 'r': '⠗', 's': '⠎', 't': '⠞',
   'u': '⠥', 'v': '⠧', 'w': '⠺', 'x': '⠭', 'y': '⠽',
   'z': '⠵', ' ': ' ', '.': '⠲', ',': '⠂', '?': '⠦',
-  '!': '⠖', '-': '⠤'
+  '!': '⠖', '-': '⠤', ':': '⠒', ';': '⠆', '(': '⠐⠣',
+  ')': '⠐⠜', '"': '⠦', "'": '⠄', '/': '⠸⠌',
+  '0': '⠚', '1': '⠁', '2': '⠃', '3': '⠉', '4': '⠙',
+  '5': '⠑', '6': '⠋', '7': '⠛', '8': '⠓', '9': '⠊',
+  '\n': '\n'
 };
 
 export const AdvancedAccessibilityFeatures = ({ content, pdfData }) => {
