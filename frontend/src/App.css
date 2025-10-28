@@ -123,3 +123,58 @@ html {
 .fade-in {
   animation: fadeIn 0.3s ease-in-out;
 }
+
+/* Sign Language Animations */
+@keyframes sign-left {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(-15deg);
+  }
+}
+
+@keyframes sign-right {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg) scaleX(-1);
+  }
+  50% {
+    transform: translateY(-10px) rotate(15deg) scaleX(-1);
+  }
+}
+
+.animate-sign-left {
+  animation: sign-left 0.8s ease-in-out infinite;
+}
+
+.animate-sign-right {
+  animation: sign-right 0.8s ease-in-out infinite;
+}
+
+/* Blink Animation */
+@keyframes blink {
+  0%, 90%, 100% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 0;
+  }
+}
+
+.animate-blink {
+  animation: blink 3s ease-in-out infinite;
+}
+
+/* Focus Ring Animation */
+@keyframes focus-ring {
+  0%, 100% {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.3);
+  }
+}
+
+.focus-ring-animate {
+  animation: focus-ring 1.5s ease-in-out infinite;
+}
