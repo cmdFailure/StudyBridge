@@ -57,35 +57,35 @@ export const AnalyticsDashboard = ({ pdfData, simplifiedText }) => {
   ];
 
   return (
-    <div className=\"bg-slate-800/50 border border-slate-700 rounded-2xl p-6\" data-testid=\"analytics-dashboard\">
-      <div className=\"flex items-center gap-3 mb-6\">
-        <TrendingUp className=\"w-6 h-6 text-blue-400\" />
-        <h3 className=\"text-xl font-bold text-white\">Learning Analytics</h3>
+    <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6" data-testid="analytics-dashboard">
+      <div className="flex items-center gap-3 mb-6">
+        <TrendingUp className="w-6 h-6 text-blue-400" />
+        <h3 className="text-xl font-bold text-white">Learning Analytics</h3>
       </div>
 
-      <div className=\"grid grid-cols-2 gap-4 mb-6\">
+      <div className="grid grid-cols-2 gap-4 mb-6">
         {metrics.map((metric, idx) => {
           const Icon = metric.icon;
           return (
-            <div key={idx} className=\"bg-slate-900/50 rounded-xl p-4\">
+            <div key={idx} className="bg-slate-900/50 rounded-xl p-4">
               <div className={`${metric.bgColor} w-10 h-10 rounded-lg flex items-center justify-center mb-3`}>
                 <Icon className={`w-5 h-5 ${metric.color}`} />
               </div>
-              <p className=\"text-sm text-slate-400 mb-1\">{metric.label}</p>
-              <p className=\"text-2xl font-bold text-white\">{metric.value}</p>
+              <p className="text-sm text-slate-400 mb-1">{metric.label}</p>
+              <p className="text-2xl font-bold text-white">{metric.value}</p>
             </div>
           );
         })}
       </div>
 
       {/* AI Recommendations */}
-      <div className=\"bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/30 rounded-xl p-4\">
-        <div className=\"flex items-start gap-3\">
-          <BookOpen className=\"w-5 h-5 text-purple-400 mt-1\" />
+      <div className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/30 rounded-xl p-4">
+        <div className="flex items-start gap-3">
+          <BookOpen className="w-5 h-5 text-purple-400 mt-1" />
           <div>
-            <h4 className=\"text-white font-semibold mb-2\">AI Recommendation</h4>
-            <p className=\"text-slate-300 text-sm\">
-              Your optimal learning time is <strong className=\"text-blue-400\">{analytics.optimalLearningTime}</strong>.
+            <h4 className="text-white font-semibold mb-2">AI Recommendation</h4>
+            <p className="text-slate-300 text-sm">
+              Your optimal learning time is <strong className="text-blue-400">{analytics.optimalLearningTime}</strong>.
               {analytics.recommendedBreak && ' Consider taking a 10-minute break to maintain focus.'}
             </p>
           </div>
