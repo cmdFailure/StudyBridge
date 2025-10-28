@@ -45,7 +45,7 @@ export const TTSPlayer = ({ text, profile, useSimplified }) => {
   }, []);
 
   const handlePlay = () => {
-    if (!text) return;
+    if (!cleanedText) return;
 
     if (isPlaying) {
       window.speechSynthesis.pause();
@@ -54,7 +54,7 @@ export const TTSPlayer = ({ text, profile, useSimplified }) => {
       if (window.speechSynthesis.paused) {
         window.speechSynthesis.resume();
       } else {
-        const utterance = new SpeechSynthesisUtterance(text);
+        const utterance = new SpeechSynthesisUtterance(cleanedText);
         utterance.rate = speed;
         if (selectedVoice) utterance.voice = selectedVoice;
         
