@@ -248,6 +248,184 @@ Provide only the translated text without any additional commentary."""
         logging.error(f"Translation error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error translating content: {str(e)}")
 
+@api_router.post("/upload-video")
+async def upload_video(file: UploadFile = File(...)):
+    """Upload and process video file"""
+    try:
+        # Validate file type
+        if not file.content_type or not file.content_type.startswith('video/'):
+            raise HTTPException(status_code=400, detail="File must be a video")
+        
+        # Create temp directory for video storage
+        temp_dir = Path(tempfile.gettempdir()) / "studybridge_videos"
+        temp_dir.mkdir(exist_ok=True)
+        
+        # Generate unique filename
+        video_id = str(uuid.uuid4())
+        file_extension = Path(file.filename).suffix
+        video_path = temp_dir / f"{video_id}{file_extension}"
+        
+        # Save uploaded file
+        with open(video_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        
+        logging.info(f"Video uploaded: {video_path}")
+        
+        return {
+            "video_id": video_id,
+            "filename": file.filename,
+            "path": str(video_path),
+            "message": "Video uploaded successfully"
+        }
+        
+    except Exception as e:
+        logging.error(f"Video upload error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error uploading video: {str(e)}")
+
+@api_router.post("/process-youtube")
+async def process_youtube(request: YouTubeRequest):
+    """Download and process YouTube video"""
+    try:
+        # Create temp directory
+        temp_dir = Path(tempfile.gettempdir()) / "studybridge_videos"
+        temp_dir.mkdir(exist_ok=True)
+        
+        video_id = str(uuid.uuid4())
+        output_path = str(temp_dir / f"{video_id}.mp4")
+        
+        # Download YouTube video
+        ydl_opts = {
+            'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+            'outtmpl': output_path,
+            'quiet': True,
+            'no_warnings': True,
+            'max_filesize': 100 * 1024 * 1024,  # 100MB limit
+        }
+        
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(request.youtube_url, download=True)
+            title = info.get('title', 'YouTube Video')
+            duration = info.get('duration', 0)
+        
+        logging.info(f"YouTube video downloaded: {output_path}")
+        
+        return {
+            "video_id": video_id,
+            "filename": f"{title}.mp4",
+            "path": output_path,
+            "duration": duration,
+            "message": "YouTube video processed successfully"
+        }
+        
+    except Exception as e:
+        logging.error(f"YouTube processing error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error processing YouTube video: {str(e)}")
+
+@api_router.post("/transcribe-video")
+async def transcribe_video(video_id: str):
+    """Transcribe video using Gemini AI"""
+    try:
+        if not gemini_key:
+            return JSONResponse(
+                status_code=400,
+                content={"error": "Gemini API key not configured"}
+            )
+        
+        # Find video file
+        temp_dir = Path(tempfile.gettempdir()) / "studybridge_videos"
+        video_files = list(temp_dir.glob(f"{video_id}.*"))
+        
+        if not video_files:
+            raise HTTPException(status_code=404, detail="Video file not found")
+        
+        video_path = video_files[0]
+        
+        logging.info(f"Transcribing video: {video_path}")
+        
+        # Upload video to Gemini Files API
+        video_file = genai.upload_file(path=str(video_path))
+        
+        # Wait for file to be processed
+        import time
+        while video_file.state.name == "PROCESSING":
+            time.sleep(2)
+            video_file = genai.get_file(video_file.name)
+        
+        if video_file.state.name == "FAILED":
+            raise Exception("Video processing failed")
+        
+        # Generate transcript with Gemini
+        model = genai.GenerativeModel('gemini-2.0-flash')
+        
+        prompt = """Please transcribe this video completely. Provide:
+1. Full transcript with timestamps in format [MM:SS]
+2. Clear paragraph breaks for different topics
+3. Include all spoken words accurately
+
+Format the output as:
+[00:00] transcript text here
+[00:30] more transcript text
+etc."""
+        
+        response = model.generate_content([video_file, prompt])
+        transcript_text = response.text
+        
+        # Parse transcript into segments
+        segments = []
+        lines = transcript_text.split('\n')
+        
+        for line in lines:
+            line = line.strip()
+            if line and line.startswith('['):
+                # Extract timestamp and text
+                try:
+                    timestamp_end = line.index(']')
+                    timestamp = line[1:timestamp_end]
+                    text = line[timestamp_end + 1:].strip()
+                    if text:
+                        segments.append({
+                            "timestamp": timestamp,
+                            "text": text
+                        })
+                except ValueError:
+                    # If no proper timestamp, add as continuation
+                    if segments:
+                        segments[-1]["text"] += " " + line
+        
+        # Clean up video file after transcription
+        try:
+            video_path.unlink()
+            genai.delete_file(video_file.name)
+        except Exception as cleanup_error:
+            logging.warning(f"Cleanup error: {cleanup_error}")
+        
+        return {
+            "transcript": transcript_text,
+            "segments": segments,
+            "message": "Video transcribed successfully"
+        }
+        
+    except Exception as e:
+        logging.error(f"Transcription error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error transcribing video: {str(e)}")
+
+@api_router.get("/video-file/{video_id}")
+async def get_video_file(video_id: str):
+    """Serve video file for playback"""
+    try:
+        temp_dir = Path(tempfile.gettempdir()) / "studybridge_videos"
+        video_files = list(temp_dir.glob(f"{video_id}.*"))
+        
+        if not video_files:
+            raise HTTPException(status_code=404, detail="Video file not found")
+        
+        video_path = video_files[0]
+        return FileResponse(video_path, media_type="video/mp4")
+        
+    except Exception as e:
+        logging.error(f"Video file error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error retrieving video: {str(e)}")
+
 # Include router
 app.include_router(api_router)
 
