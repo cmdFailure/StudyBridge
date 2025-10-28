@@ -100,7 +100,7 @@ async def simplify_content(request: SimplifyRequest):
                 content={"error": "Gemini API key not configured. Please set GEMINI_API_KEY."}
             )
         
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-2.0-flash')
         
         # Build disability-specific prompt
         disability_guidance = {
@@ -152,7 +152,7 @@ async def generate_study_aids(request: StudyAidsRequest):
                 content={"error": "Gemini API key not configured"}
             )
         
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-2.0-flash')
         
         prompts = {
             "flashcards": f"""Create 5-7 flashcards from this content. Format as JSON array with 'front' and 'back' keys.
