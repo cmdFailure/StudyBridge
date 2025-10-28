@@ -20,9 +20,10 @@ const brailleMap = {
 
 export const AdvancedAccessibilityFeatures = ({ content, pdfData }) => {
   const [brailleText, setBrailleText] = useState('');
-  const [isOffline, setIsOffline] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [translatedText, setTranslatedText] = useState('');
+  const [isTranslating, setIsTranslating] = useState(false);
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 
   const convertToBraille = () => {
     if (!content) {
@@ -30,6 +31,7 @@ export const AdvancedAccessibilityFeatures = ({ content, pdfData }) => {
       return;
     }
 
+    // Convert to Braille with enhanced character support
     const braille = content
       .toLowerCase()
       .split('')
@@ -38,6 +40,24 @@ export const AdvancedAccessibilityFeatures = ({ content, pdfData }) => {
     
     setBrailleText(braille);
     toast.success('Converted to Braille!');
+  };
+
+  const downloadBraille = () => {
+    if (!brailleText) {
+      toast.error('Please convert to Braille first');
+      return;
+    }
+
+    const blob = new Blob([brailleText], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'braille_output.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast.success('Braille text downloaded!');
   };
 
   const downloadAudioBook = async () => {
@@ -54,30 +74,41 @@ export const AdvancedAccessibilityFeatures = ({ content, pdfData }) => {
     }, 2000);
   };
 
-  const enableOfflineMode = () => {
-    // Store content in localStorage for offline access
-    if (content && pdfData) {
-      localStorage.setItem('offline_content', JSON.stringify({
-        content,
-        pdfData,
-        timestamp: Date.now()
-      }));
-      setIsOffline(true);
-      toast.success('Offline mode enabled! Content saved locally.');
-    } else {
-      toast.error('No content to save offline');
+  const translateContent = async (lang) => {
+    if (!content) {
+      toast.error('No content to translate');
+      return;
     }
-  };
 
-  const translateContent = (lang) => {
     setSelectedLanguage(lang);
-    // In production, this would call a translation API
+    setIsTranslating(true);
     toast.info(`Translating to ${lang.toUpperCase()}...`);
     
-    setTimeout(() => {
-      setTranslatedText(`[${lang.toUpperCase()}] ${content?.substring(0, 200)}...`);
-      toast.success('Translation complete!');
-    }, 1500);
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/translate-content`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          content: content,
+          target_language: lang
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Translation failed');
+      }
+
+      const data = await response.json();
+      setTranslatedText(data.translated_text);
+      toast.success(`Translation to ${data.language_name} complete!`);
+    } catch (error) {
+      console.error('Translation error:', error);
+      toast.error('Translation failed. Please try again.');
+    } finally {
+      setIsTranslating(false);
+    }
   };
 
   return (
