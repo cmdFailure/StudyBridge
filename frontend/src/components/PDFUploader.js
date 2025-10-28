@@ -30,8 +30,8 @@ export const PDFUploader = ({ onFileProcess, isProcessing }) => {
         min-h-[280px] flex flex-col items-center justify-center gap-4
         ${
           isDragActive
-            ? 'border-sky-500 bg-sky-50 scale-[1.02]'
-            : 'border-slate-300 hover:border-sky-400 hover:bg-slate-50'
+            ? 'border-blue-500 bg-blue-500/10 scale-[1.02]'
+            : 'border-slate-600 bg-slate-800/50 hover:border-blue-400 hover:bg-slate-800'
         }
         ${isProcessing ? 'opacity-60 cursor-not-allowed' : ''}
       `}
@@ -43,13 +43,13 @@ export const PDFUploader = ({ onFileProcess, isProcessing }) => {
       
       {isProcessing ? (
         <>
-          <Loader2 className="w-16 h-16 text-sky-500 animate-spin" aria-hidden="true" />
-          <p className="text-lg font-medium text-slate-700">Processing PDF...</p>
-          <p className="text-sm text-slate-500">Extracting and analyzing content</p>
+          <Loader2 className="w-16 h-16 text-blue-400 animate-spin" aria-hidden="true" />
+          <p className="text-lg font-medium text-slate-200">Processing PDF...</p>
+          <p className="text-sm text-slate-400">Extracting and analyzing content</p>
         </>
       ) : (
         <>
-          <div className="bg-gradient-to-br from-sky-400 to-blue-500 p-5 rounded-2xl shadow-lg">
+          <div className="bg-gradient-to-br from-blue-400 to-blue-500 p-5 rounded-2xl shadow-lg">
             {isDragActive ? (
               <FileText className="w-12 h-12 text-white" aria-hidden="true" />
             ) : (
@@ -58,17 +58,17 @@ export const PDFUploader = ({ onFileProcess, isProcessing }) => {
           </div>
           
           <div className="text-center">
-            <p className="text-xl font-semibold text-slate-800 mb-2">
+            <p className="text-xl font-semibold text-slate-100 mb-2">
               {isDragActive ? 'Drop your PDF here' : 'Upload PDF Document'}
             </p>
-            <p className="text-base text-slate-600">
+            <p className="text-base text-slate-400">
               Drag and drop or click to select a PDF file
             </p>
           </div>
           
           <Button 
             data-testid="browse-files-btn"
-            className="mt-2 bg-sky-500 hover:bg-sky-600 text-white px-8 py-6 text-base rounded-xl"
+            className="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-8 py-6 text-base rounded-xl"
             type="button"
           >
             Browse Files
