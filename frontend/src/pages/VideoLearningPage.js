@@ -72,13 +72,13 @@ export const VideoLearningPage = () => {
           </div>
         ) : (
           // Video Processing & Accessibility
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-slide-in-up">
             {/* Left Column - Video Player */}
             <div className="lg:col-span-2 space-y-6">
-              <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+              <div className="glass border border-slate-700 rounded-2xl p-6 hover-scale">
                 <h2 className="text-white text-xl font-bold mb-4 flex items-center gap-2">
                   <Video className="w-6 h-6 text-blue-400" />
-                  {videoData.filename}
+                  <span className="truncate">{videoData.filename}</span>
                 </h2>
                 <VideoPlayer
                   videoUrl={videoData.videoUrl}
@@ -88,8 +88,11 @@ export const VideoLearningPage = () => {
               </div>
               
               {/* Content Simplifier */}
-              <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
-                <h2 className="text-white text-xl font-bold mb-4">Simplify Transcript</h2>
+              <div className="glass border border-slate-700 rounded-2xl p-6 hover-scale">
+                <h2 className="text-white text-xl font-bold mb-4 flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-purple-400" />
+                  Simplify Transcript
+                </h2>
                 <ContentSimplifier
                   originalText={videoData.transcript}
                   onSimplified={handleSimplified}
@@ -100,7 +103,7 @@ export const VideoLearningPage = () => {
             {/* Right Column - Accessibility Features */}
             <div className="space-y-6">
               {/* TTS Player */}
-              <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+              <div className="glass border border-slate-700 rounded-2xl p-6 hover-scale">
                 <h2 className="text-white text-xl font-bold mb-4 flex items-center gap-2">
                   <Volume2 className="w-5 h-5 text-purple-400" />
                   Text-to-Speech
@@ -109,8 +112,11 @@ export const VideoLearningPage = () => {
               </div>
               
               {/* Advanced Accessibility Features */}
-              <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
-                <h2 className="text-white text-xl font-bold mb-4">Advanced Features</h2>
+              <div className="glass border border-slate-700 rounded-2xl p-6 hover-scale">
+                <h2 className="text-white text-xl font-bold mb-4 flex items-center gap-2">
+                  <Languages className="w-5 h-5 text-green-400" />
+                  Advanced Features
+                </h2>
                 <AdvancedAccessibilityFeatures
                   content={simplifiedTranscript || videoData.transcript}
                   pdfData={null}
