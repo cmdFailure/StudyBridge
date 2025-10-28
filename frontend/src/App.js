@@ -9,6 +9,7 @@ import { AdvancedFeaturesPage } from '@/pages/AdvancedFeaturesPage';
 import { UploadPage } from '@/pages/UploadPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { ProfilePage } from '@/pages/ProfilePage';
+import { VideoLearningPage } from '@/pages/VideoLearningPage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/upload" element={<UploadPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/video-learning" element={<VideoLearningPage />} />
         </Routes>
         <Toaster position="top-right" richColors />
       </div>
