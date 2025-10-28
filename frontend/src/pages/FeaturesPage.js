@@ -88,7 +88,7 @@ export const FeaturesPage = () => {
                 <h3 className="text-2xl font-bold text-white mb-4" style={{ fontFamily: 'Manrope, sans-serif' }}>
                   {feature.title}
                 </h3>
-                <p className="text-slate-300 leading-relaxed">
+                <p className="text-gray-400 leading-relaxed">
                   {feature.description}
                 </p>
               </div>
