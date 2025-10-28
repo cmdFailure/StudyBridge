@@ -15,6 +15,7 @@ export const Header = () => {
     { label: 'Advanced AI', path: '/advanced' },
     { label: 'Upload', path: '/upload' },
     { label: 'Video Learning', path: '/video-learning' },
+    { label: 'Resources', path: '/resources' },
     { label: 'Profile', path: '/profile' }
   ];
 
