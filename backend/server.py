@@ -459,6 +459,169 @@ async def get_video_file(video_id: str):
         logging.error(f"Video file error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error retrieving video: {str(e)}")
 
+@api_router.post("/describe-image")
+async def describe_image(request: ImageDescriptionRequest):
+    """Generate AI description for images - accessibility feature"""
+    try:
+        if not gemini_key:
+            return JSONResponse(status_code=400, content={"error": "Gemini API key not configured"})
+        
+        model = genai.GenerativeModel('gemini-2.0-flash')
+        
+        prompt = f"""You are an accessibility expert helping visually impaired users understand images.
+
+Describe this image in detail for someone who cannot see it. Include:
+1. Main subjects and objects
+2. Colors and visual details
+3. Text visible in the image
+4. Spatial relationships
+5. Overall context and meaning
+
+{f"Context: {request.context}" if request.context else ""}
+
+Provide a clear, descriptive explanation."""
+
+        response = model.generate_content([prompt, request.image_url])
+        
+        return {"description": response.text}
+        
+    except Exception as e:
+        logging.error(f"Image description error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error describing image: {str(e)}")
+
+@api_router.post("/ai-tutor")
+async def ai_tutor(request: ChatMessage):
+    """AI tutor chatbot for personalized help"""
+    try:
+        if not gemini_key:
+            return JSONResponse(status_code=400, content={"error": "Gemini API key not configured"})
+        
+        model = genai.GenerativeModel('gemini-2.0-flash')
+        
+        prompt = f"""You are an AI tutor specialized in helping students with disabilities understand educational content.
+
+Student Question: {request.message}
+{f"Context: {request.context}" if request.context else ""}
+Student Level: {request.student_level}
+
+Provide a clear, simple, and encouraging response. Break down complex concepts, use examples, and be patient."""
+
+        response = model.generate_content(prompt)
+        
+        return {
+            "response": response.text,
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        
+    except Exception as e:
+        logging.error(f"AI tutor error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error with AI tutor: {str(e)}")
+
+@api_router.post("/save-note")
+async def save_note(note: Note):
+    """Save student notes"""
+    try:
+        note_dict = note.dict()
+        await db.notes.insert_one(note_dict)
+        return {"message": "Note saved successfully", "note_id": note.id}
+    except Exception as e:
+        logging.error(f"Save note error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error saving note: {str(e)}")
+
+@api_router.get("/notes/{document_id}")
+async def get_notes(document_id: str):
+    """Get notes for a document"""
+    try:
+        notes = await db.notes.find({"document_id": document_id}).to_list(length=100)
+        # Convert ObjectId to string for JSON serialization
+        for note in notes:
+            if '_id' in note:
+                del note['_id']
+        return {"notes": notes}
+    except Exception as e:
+        logging.error(f"Get notes error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error retrieving notes: {str(e)}")
+
+@api_router.post("/track-progress")
+async def track_progress(entry: ProgressEntry):
+    """Track student progress"""
+    try:
+        entry_dict = entry.dict()
+        await db.progress.insert_one(entry_dict)
+        return {"message": "Progress tracked successfully"}
+    except Exception as e:
+        logging.error(f"Track progress error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error tracking progress: {str(e)}")
+
+@api_router.get("/progress/{user_id}")
+async def get_progress(user_id: str):
+    """Get user progress analytics"""
+    try:
+        progress_entries = await db.progress.find({"user_id": user_id}).to_list(length=1000)
+        
+        # Remove ObjectId
+        for entry in progress_entries:
+            if '_id' in entry:
+                del entry['_id']
+        
+        # Calculate analytics
+        total_activities = len(progress_entries)
+        pdf_count = len([e for e in progress_entries if e.get('activity_type') == 'pdf_read'])
+        video_count = len([e for e in progress_entries if e.get('activity_type') == 'video_watched'])
+        
+        return {
+            "total_activities": total_activities,
+            "pdfs_read": pdf_count,
+            "videos_watched": video_count,
+            "recent_activities": progress_entries[-10:] if progress_entries else []
+        }
+    except Exception as e:
+        logging.error(f"Get progress error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error retrieving progress: {str(e)}")
+
+@api_router.get("/resources")
+async def get_resources(category: Optional[str] = None):
+    """Get educational resources"""
+    try:
+        query = {"category": category} if category else {}
+        resources = await db.resources.find(query).to_list(length=100)
+        
+        # Remove ObjectId
+        for resource in resources:
+            if '_id' in resource:
+                del resource['_id']
+        
+        return {"resources": resources}
+    except Exception as e:
+        logging.error(f"Get resources error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error retrieving resources: {str(e)}")
+
+@api_router.post("/voice-command")
+async def process_voice_command(command: dict):
+    """Process voice commands for accessibility"""
+    try:
+        command_text = command.get("command", "").lower()
+        
+        # Parse command and return action
+        actions = {
+            "upload": {"action": "navigate", "route": "/upload"},
+            "video": {"action": "navigate", "route": "/video-learning"},
+            "read": {"action": "start_tts"},
+            "translate": {"action": "translate"},
+            "simplify": {"action": "simplify"},
+            "help": {"action": "show_help"}
+        }
+        
+        for keyword, action in actions.items():
+            if keyword in command_text:
+                return action
+        
+        return {"action": "unknown", "message": "Command not recognized"}
+        
+    except Exception as e:
+        logging.error(f"Voice command error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error processing command: {str(e)}")
+
 # Include router
 app.include_router(api_router)
 
