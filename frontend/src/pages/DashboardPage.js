@@ -90,6 +90,24 @@ export const DashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-8">
+      {/* Interactive Accessibility Overlays */}
+      <FocusMode 
+        content={displayText} 
+        isActive={accessibilityFeatures.focusMode} 
+        onClose={() => handleFeatureToggle('focusMode', false)}
+      />
+      <SignLanguageInterpreter 
+        text={displayText} 
+        isActive={accessibilityFeatures.signLanguage}
+      />
+      <ReadingGuide isActive={accessibilityFeatures.readingGuide} />
+      <KeyboardNavigationGuide isActive={accessibilityFeatures.keyboardNav} />
+      <ColorBlindFilter mode={accessibilityFeatures.colorBlindMode} />
+      <LiveCaptions 
+        text={displayText} 
+        isActive={accessibilityFeatures.liveCaptions}
+      />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
