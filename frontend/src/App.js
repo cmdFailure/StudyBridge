@@ -80,6 +80,7 @@ const Home = () => {
   };
 
   const displayText = simplifiedText || pdfText;
+  const ttsText = simplifiedText || pdfText;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-sky-50 to-blue-50">
@@ -163,7 +164,7 @@ const Home = () => {
 
                 {displayText && (
                   <>
-                    <TTSPlayer text={displayText} profile={profile} />
+                    <TTSPlayer text={ttsText} profile={profile} useSimplified={!!simplifiedText} />
                     <StudyToolsPanel content={displayText} />
                   </>
                 )}
