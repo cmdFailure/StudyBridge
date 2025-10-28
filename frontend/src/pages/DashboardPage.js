@@ -76,6 +76,13 @@ export const DashboardPage = () => {
     toast.success('Profile saved!');
   };
 
+  const handleFeatureToggle = (feature, isEnabled) => {
+    setAccessibilityFeatures(prev => ({
+      ...prev,
+      [feature]: isEnabled
+    }));
+  };
+
   const displayText = simplifiedText || pdfData?.text || '';
   const ttsText = simplifiedText || pdfData?.text || '';
 
