@@ -67,12 +67,13 @@ export const UploadPage = () => {
             Transform your document into an accessible learning experience with AI-powered simplification
           </p>
         </div>
-        </div>
 
-        <PDFUploader 
-          onFileProcess={handleFileProcess}
-          isProcessing={isProcessing}
-        />
+        <div className="animate-slide-in-up" style={{animationDelay: '0.2s'}}>
+          <PDFUploader 
+            onFileProcess={handleFileProcess}
+            isProcessing={isProcessing}
+          />
+        </div>
       </div>
     </div>
   );
