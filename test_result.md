@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Implement full Braille converter, multilingual translation (Mandarin, Hindi, Arabic), and remove offline mode from AdvancedAccessibilityFeatures component"
+user_problem_statement: "Add video learning feature: Upload local videos or YouTube URLs, automatically transcribe using Gemini API, provide live captions on video player, apply all accessibility features (Braille, translation, TTS, simplification) to transcript, include speed controls and timestamp navigation"
 
 backend:
   - task: "Translation API endpoint"
