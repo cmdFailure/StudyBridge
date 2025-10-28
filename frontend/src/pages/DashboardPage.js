@@ -173,6 +173,7 @@ export const DashboardPage = () => {
           <div className="lg:col-span-1 space-y-8">
             <div className="sticky top-8 space-y-8">
               <AccessibilityToolbar onFeatureToggle={handleFeatureToggle} />
+              <AdvancedAccessibilityFeatures content={displayText} pdfData={pdfData} />
               <VisualAccessibilityPanel
                 profile={profile}
                 onUpdateProfile={handleSaveProfile}
