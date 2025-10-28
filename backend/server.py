@@ -45,6 +45,10 @@ class TextResponse(BaseModel):
     text: str
     reading_score: float = 0.0
 
+class TranslateRequest(BaseModel):
+    content: str
+    target_language: str  # zh (Mandarin), hi (Hindi), ar (Arabic)
+
 # Routes
 @api_router.get("/")
 async def root():
