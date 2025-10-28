@@ -30,8 +30,12 @@ export const Header = () => {
             className="flex items-center gap-3 hover:opacity-80 transition-all group"
             data-testid="logo-btn"
           >
-            <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-xl group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/50">
-              <BookOpen className="w-6 h-6 text-white" />
+            <div className="group-hover:scale-110 transition-transform">
+              <img 
+                src="https://customer-assets.emergentagent.com/job_pdf-ally/artifacts/5qvhi1o0_WhatsApp%20Image%202025-10-29%20at%2003.18.16.jpeg"
+                alt="StudyBridge Logo"
+                className="h-10 w-10 rounded-xl object-cover shadow-lg"
+              />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent" style={{ fontFamily: 'Manrope, sans-serif' }}>
               StudyBridge
