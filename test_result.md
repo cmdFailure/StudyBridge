@@ -268,16 +268,15 @@ frontend:
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 1
+  test_sequence: 2
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Video upload endpoint"
-    - "YouTube processing endpoint"
-    - "Video transcription endpoint"
     - "VideoPlayer component with live captions"
     - "VideoUploader component"
+    - "VideoLearningPage"
+    - "Navigation and routing for video learning"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
