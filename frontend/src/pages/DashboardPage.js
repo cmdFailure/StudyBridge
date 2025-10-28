@@ -90,7 +90,17 @@ export const DashboardPage = () => {
   if (!pdfData) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-8">
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      {/* Animated Gradient Background */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10"></div>
+        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-transparent rounded-full blur-3xl animate-pulse-custom pointer-events-none"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-transparent rounded-full blur-3xl animate-pulse-custom pointer-events-none" style={{animationDelay: '1s'}}></div>
+      </div>
+
+      {/* Grid Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+
       {/* Interactive Accessibility Overlays */}
       <FocusMode 
         content={displayText} 
@@ -109,25 +119,27 @@ export const DashboardPage = () => {
         isActive={accessibilityFeatures.liveCaptions}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-8 animate-slide-in-up">
           <div className="flex items-center gap-4">
             <Button
               data-testid="back-to-upload-btn"
               onClick={() => navigate('/upload')}
               variant="outline"
-              className="border-slate-600 bg-slate-800/50 hover:bg-slate-700 text-white"
+              className="border-2 border-gray-700 hover:border-gray-600 bg-gray-900/50 hover:bg-gray-800/50 text-white backdrop-blur-sm"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back
             </Button>
             <div>
               <div className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-blue-400" />
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-white" />
+                </div>
                 <h2 className="text-xl font-bold text-white">{pdfData.fileName}</h2>
               </div>
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-gray-400 ml-12">
                 {pdfData.pages} pages • {pdfData.wordCount} words
               </p>
             </div>
@@ -135,7 +147,7 @@ export const DashboardPage = () => {
         </div>
 
         {/* Accessibility Checker */}
-        <div className="mb-8">
+        <div className="mb-8 animate-slide-in-up" style={{animationDelay: '0.1s'}}>
           <AccessibilityChecker
             originalScore={pdfData.readingScore}
             simplifiedScore={simplifiedScore}
@@ -146,8 +158,7 @@ export const DashboardPage = () => {
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Main Content */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Analytics and Emotion Detection */}
+          <div className="lg:col-span-2 space-y-8">{/* Analytics and Emotion Detection */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <AnalyticsDashboard pdfData={pdfData} simplifiedText={simplifiedText} />
               <EmotionDetector />
