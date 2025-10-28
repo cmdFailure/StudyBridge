@@ -22,7 +22,8 @@ def get_backend_url():
                     return line.split('=', 1)[1].strip()
     return "http://localhost:8001"
 
-BASE_URL = get_backend_url()
+# Use local URL for testing to avoid timeout issues
+BASE_URL = "http://127.0.0.1:8001"
 API_BASE = f"{BASE_URL}/api"
 
 print(f"Testing backend at: {API_BASE}")
