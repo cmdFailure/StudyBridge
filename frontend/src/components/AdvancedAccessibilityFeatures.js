@@ -125,17 +125,29 @@ export const AdvancedAccessibilityFeatures = ({ content, pdfData }) => {
           </div>
         </div>
         
-        <Button
-          onClick={convertToBraille}
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white mb-4"
-        >
-          Convert to Braille
-        </Button>
+        <div className="flex gap-2 mb-4">
+          <Button
+            onClick={convertToBraille}
+            className="flex-1 bg-blue-500 hover:bg-blue-600 text-white"
+          >
+            Convert to Braille
+          </Button>
+          {brailleText && (
+            <Button
+              onClick={downloadBraille}
+              className="bg-cyan-500 hover:bg-cyan-600 text-white"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Download
+            </Button>
+          )}
+        </div>
 
         {brailleText && (
-          <div className="bg-slate-900/50 rounded-xl p-4 max-h-32 overflow-y-auto">
-            <p className="text-white text-2xl leading-relaxed font-mono">
-              {brailleText.substring(0, 200)}...
+          <div className="bg-slate-900/50 rounded-xl p-4 max-h-48 overflow-y-auto">
+            <p className="text-white text-2xl leading-relaxed font-mono break-words">
+              {brailleText.substring(0, 500)}
+              {brailleText.length > 500 && '...'}
             </p>
           </div>
         )}
@@ -149,30 +161,58 @@ export const AdvancedAccessibilityFeatures = ({ content, pdfData }) => {
           </div>
           <div>
             <h3 className="text-white font-bold text-lg">Multi-Language Translation</h3>
-            <p className="text-slate-400 text-sm">Translate content to 100+ languages</p>
+            <p className="text-slate-400 text-sm">Translate content to major global languages</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-4 gap-2 mb-4">
-          {['es', 'fr', 'de', 'zh', 'ar', 'hi', 'ja', 'pt'].map(lang => (
-            <Button
-              key={lang}
-              onClick={() => translateContent(lang)}
-              variant={selectedLanguage === lang ? 'default' : 'outline'}
-              className={`${
-                selectedLanguage === lang 
-                  ? 'bg-green-500 hover:bg-green-600' 
-                  : 'border-slate-600 hover:bg-slate-800'
-              } text-white text-xs`}
-            >
-              {lang.toUpperCase()}
-            </Button>
-          ))}
+        <div className="grid grid-cols-3 gap-3 mb-4">
+          <Button
+            onClick={() => translateContent('zh')}
+            disabled={isTranslating}
+            variant={selectedLanguage === 'zh' ? 'default' : 'outline'}
+            className={`${
+              selectedLanguage === 'zh' 
+                ? 'bg-green-500 hover:bg-green-600' 
+                : 'border-slate-600 hover:bg-slate-800'
+            } text-white`}
+          >
+            🇨🇳 Mandarin
+          </Button>
+          <Button
+            onClick={() => translateContent('hi')}
+            disabled={isTranslating}
+            variant={selectedLanguage === 'hi' ? 'default' : 'outline'}
+            className={`${
+              selectedLanguage === 'hi' 
+                ? 'bg-green-500 hover:bg-green-600' 
+                : 'border-slate-600 hover:bg-slate-800'
+            } text-white`}
+          >
+            🇮🇳 Hindi
+          </Button>
+          <Button
+            onClick={() => translateContent('ar')}
+            disabled={isTranslating}
+            variant={selectedLanguage === 'ar' ? 'default' : 'outline'}
+            className={`${
+              selectedLanguage === 'ar' 
+                ? 'bg-green-500 hover:bg-green-600' 
+                : 'border-slate-600 hover:bg-slate-800'
+            } text-white`}
+          >
+            🇸🇦 Arabic
+          </Button>
         </div>
 
-        {translatedText && (
-          <div className="bg-slate-900/50 rounded-xl p-4">
-            <p className="text-white text-sm">{translatedText}</p>
+        {isTranslating && (
+          <div className="bg-slate-900/50 rounded-xl p-4 mb-4">
+            <p className="text-white text-sm text-center">Translating...</p>
+          </div>
+        )}
+
+        {translatedText && !isTranslating && (
+          <div className="bg-slate-900/50 rounded-xl p-4 max-h-64 overflow-y-auto">
+            <p className="text-white text-sm leading-relaxed">{translatedText}</p>
           </div>
         )}
       </div>
@@ -194,44 +234,6 @@ export const AdvancedAccessibilityFeatures = ({ content, pdfData }) => {
           className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
         >
           Generate & Download Audio Book
-        </Button>
-      </div>
-
-      {/* Offline Mode */}
-      <div className="bg-gradient-to-br from-orange-500/10 to-red-500/10 border border-orange-500/30 rounded-2xl p-6">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="bg-orange-500/20 p-3 rounded-xl">
-            {isOffline ? (
-              <WifiOff className="w-6 h-6 text-orange-400" />
-            ) : (
-              <Wifi className="w-6 h-6 text-orange-400" />
-            )}
-          </div>
-          <div>
-            <h3 className="text-white font-bold text-lg">Offline Access</h3>
-            <p className="text-slate-400 text-sm">Save content for offline use</p>
-          </div>
-        </div>
-
-        <Button
-          onClick={enableOfflineMode}
-          className={`w-full ${
-            isOffline 
-              ? 'bg-green-500 hover:bg-green-600' 
-              : 'bg-orange-500 hover:bg-orange-600'
-          } text-white`}
-        >
-          {isOffline ? (
-            <>
-              <WifiOff className="w-4 h-4 mr-2" />
-              Offline Mode Active
-            </>
-          ) : (
-            <>
-              <Download className="w-4 h-4 mr-2" />
-              Enable Offline Mode
-            </>
-          )}
         </Button>
       </div>
 
