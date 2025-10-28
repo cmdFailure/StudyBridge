@@ -4,7 +4,6 @@ import { VideoPlayer } from '../components/VideoPlayer';
 import { ContentSimplifier } from '../components/ContentSimplifier';
 import { TTSPlayer } from '../components/TTSPlayer';
 import { AdvancedAccessibilityFeatures } from '../components/AdvancedAccessibilityFeatures';
-import { Header } from '../components/Header';
 import { Video, FileText, Volume2, Languages } from 'lucide-react';
 
 export const VideoLearningPage = () => {
@@ -21,8 +20,6 @@ export const VideoLearningPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
-      <Header />
-      
       <div className="container mx-auto px-4 py-8">
         {/* Page Header */}
         <div className="text-center mb-12">
