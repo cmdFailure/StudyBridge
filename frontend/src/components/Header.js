@@ -21,37 +21,43 @@ export const Header = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <header className="bg-slate-900/95 border-b border-slate-700 backdrop-blur-sm sticky top-0 z-50">
+    <header className="bg-black/95 border-b border-gray-800 backdrop-blur-xl sticky top-0 z-50 shadow-lg shadow-blue-500/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <button 
             onClick={() => navigate('/')}
-            className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+            className="flex items-center gap-3 hover:opacity-80 transition-all group"
             data-testid="logo-btn"
           >
-            <div className="bg-blue-500 p-2 rounded-lg">
+            <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-xl group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/50">
               <BookOpen className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-white" style={{ fontFamily: 'Manrope, sans-serif' }}>
+            <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent" style={{ fontFamily: 'Manrope, sans-serif' }}>
               StudyBridge
             </span>
           </button>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
               <button
                 key={link.path}
                 data-testid={`nav-${link.label.toLowerCase()}`}
                 onClick={() => navigate(link.path)}
-                className={`text-base font-medium transition-colors ${
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all relative group ${
                   isActive(link.path)
-                    ? 'text-blue-400'
-                    : 'text-slate-300 hover:text-white'
+                    ? 'text-white'
+                    : 'text-gray-400 hover:text-white'
                 }`}
               >
                 {link.label}
+                {isActive(link.path) && (
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+                )}
+                {!isActive(link.path) && (
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full group-hover:w-1/2 transition-all"></div>
+                )}
               </button>
             ))}
           </nav>
@@ -61,7 +67,7 @@ export const Header = () => {
             <Button
               data-testid="header-get-started-btn"
               onClick={() => navigate('/upload')}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2"
+              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-2 rounded-xl font-semibold shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all"
             >
               Get Started
             </Button>
