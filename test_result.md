@@ -120,6 +120,54 @@ backend:
         agent: "testing"
         comment: "✅ Translation API fully functional. Successfully tested all 3 languages (Mandarin, Hindi, Arabic) with proper translations. All required response fields present (translated_text, target_language, language_name). Existing endpoints (extract-pdf, simplify-content, generate-study-aids) working correctly. Minor: Empty content and invalid language codes are accepted instead of rejected, but core functionality works perfectly."
 
+  - task: "Video upload endpoint"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added /api/upload-video endpoint to handle local video file uploads. Validates video type, stores in temp directory, returns video_id for further processing."
+
+  - task: "YouTube processing endpoint"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added /api/process-youtube endpoint using yt-dlp to download YouTube videos. Extracts video title and duration, saves to temp directory."
+
+  - task: "Video transcription endpoint"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added /api/transcribe-video endpoint using Gemini Files API for video transcription. Uploads video to Gemini, generates transcript with timestamps, parses into segments. Cleans up video files after processing."
+
+  - task: "Video file serving endpoint"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added /api/video-file/{video_id} endpoint to serve video files for playback in the frontend."
+
 frontend:
   - task: "Enhanced Braille converter with download"
     implemented: true
