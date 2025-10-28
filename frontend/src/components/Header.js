@@ -75,7 +75,7 @@ export const Header = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white p-2"
+            className="md:hidden text-white p-2 hover:bg-gray-800 rounded-lg transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -85,7 +85,7 @@ export const Header = () => {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 space-y-2 border-t border-slate-700">
+          <div className="md:hidden py-4 space-y-2 border-t border-gray-800 bg-black/95 backdrop-blur-xl">
             {navLinks.map((link) => (
               <button
                 key={link.path}
@@ -93,10 +93,10 @@ export const Header = () => {
                   navigate(link.path);
                   setMobileMenuOpen(false);
                 }}
-                className={`block w-full text-left px-4 py-3 rounded-lg transition-colors ${
+                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
                   isActive(link.path)
-                    ? 'bg-blue-500/10 text-blue-400'
-                    : 'text-slate-300 hover:bg-slate-800'
+                    ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white border border-blue-500/30'
+                    : 'text-gray-400 hover:bg-gray-800 hover:text-white'
                 }`}
               >
                 {link.label}
@@ -107,7 +107,7 @@ export const Header = () => {
                 navigate('/upload');
                 setMobileMenuOpen(false);
               }}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white mt-4"
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white mt-4 rounded-xl font-semibold"
             >
               Get Started
             </Button>
