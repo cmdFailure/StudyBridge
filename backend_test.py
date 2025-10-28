@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """
 Backend API Testing for StudyBridge Application
-Tests the translation endpoint and existing endpoints for regression
+Tests video learning endpoints and existing endpoints for regression
 """
 
 import requests
 import json
 import sys
 import os
+import io
+import time
 from pathlib import Path
 
 # Get backend URL from frontend .env file
