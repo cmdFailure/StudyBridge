@@ -178,3 +178,45 @@ html {
 .focus-ring-animate {
   animation: focus-ring 1.5s ease-in-out infinite;
 }
+
+/* Floating Animation for Sign Language Bot */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Happy Blink Animation */
+@keyframes happy-blink {
+  0%, 90%, 100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+
+.animate-happy-blink {
+  animation: happy-blink 3s ease-in-out infinite;
+}
+
+/* Progress Animation */
+@keyframes progress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.animate-progress {
+  animation: progress 1.2s ease-out infinite;
+}
