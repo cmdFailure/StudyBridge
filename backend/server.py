@@ -52,6 +52,18 @@ class TranslateRequest(BaseModel):
     content: str
     target_language: str  # zh (Mandarin), hi (Hindi), ar (Arabic)
 
+class YouTubeRequest(BaseModel):
+    youtube_url: str
+
+class TranscriptSegment(BaseModel):
+    timestamp: str
+    text: str
+
+class VideoTranscriptResponse(BaseModel):
+    transcript: str
+    segments: List[TranscriptSegment]
+    duration: Optional[float] = None
+
 # Routes
 @api_router.get("/")
 async def root():
