@@ -25,6 +25,16 @@ export const DashboardPage = () => {
   const [simplifiedText, setSimplifiedText] = useState('');
   const [isSimplifying, setIsSimplifying] = useState(false);
   const [simplifiedScore, setSimplifiedScore] = useState(0);
+  
+  // Interactive accessibility features
+  const [accessibilityFeatures, setAccessibilityFeatures] = useState({
+    focusMode: false,
+    signLanguage: false,
+    readingGuide: false,
+    keyboardNav: false,
+    colorBlindMode: 'none',
+    liveCaptions: false
+  });
 
   useEffect(() => {
     // Load PDF data from localStorage
