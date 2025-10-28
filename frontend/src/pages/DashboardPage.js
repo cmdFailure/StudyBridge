@@ -107,6 +107,12 @@ export const DashboardPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Main Content */}
           <div className="lg:col-span-2 space-y-8">
+            {/* Analytics and Emotion Detection */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <AnalyticsDashboard pdfData={pdfData} simplifiedText={simplifiedText} />
+              <EmotionDetector />
+            </div>
+
             <ContentSimplifier
               originalText={pdfData.text}
               simplifiedText={simplifiedText}
@@ -123,13 +129,14 @@ export const DashboardPage = () => {
             )}
           </div>
 
-          {/* Right Column - Accessibility Panel */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-8">
+          {/* Right Column - Accessibility Panel & Achievements */}
+          <div className="lg:col-span-1 space-y-8">
+            <div className="sticky top-8 space-y-8">
               <VisualAccessibilityPanel
                 profile={profile}
                 onUpdateProfile={handleSaveProfile}
               />
+              <AchievementSystem />
             </div>
           </div>
         </div>
