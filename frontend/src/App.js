@@ -18,6 +18,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/features" element={<FeaturesPage />} />
+          <Route path="/advanced" element={<AdvancedFeaturesPage />} />
           <Route path="/upload" element={<UploadPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/profile" element={<ProfilePage />} />
