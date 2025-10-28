@@ -146,7 +146,21 @@ export const DashboardPage = () => {
               </p>
             </div>
           </div>
+          <Button
+            onClick={() => setShowAITutor(true)}
+            className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-purple-500/30"
+          >
+            <Bot className="w-5 h-5 mr-2" />
+            Ask AI Tutor
+          </Button>
         </div>
+
+        {/* AI Tutor Chat */}
+        <AITutorChat
+          context={displayText}
+          isOpen={showAITutor}
+          onClose={() => setShowAITutor(false)}
+        />
 
         {/* Accessibility Checker */}
         <div className="mb-8 animate-slide-in-up" style={{animationDelay: '0.1s'}}>
