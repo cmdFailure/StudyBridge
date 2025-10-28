@@ -64,6 +64,39 @@ class VideoTranscriptResponse(BaseModel):
     segments: List[TranscriptSegment]
     duration: Optional[float] = None
 
+class ImageDescriptionRequest(BaseModel):
+    image_url: str
+    context: Optional[str] = None
+
+class ChatMessage(BaseModel):
+    message: str
+    context: Optional[str] = None
+    student_level: Optional[str] = "general"
+
+class Note(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    content: str
+    audio_url: Optional[str] = None
+    document_id: str
+    timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    highlights: Optional[List[str]] = []
+
+class ProgressEntry(BaseModel):
+    user_id: str
+    activity_type: str  # "pdf_read", "video_watched", "quiz_completed"
+    content_id: str
+    score: Optional[float] = None
+    duration_minutes: Optional[int] = None
+    timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+class Resource(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    category: str  # "education", "job_readiness", "daily_living", "financial"
+    difficulty_level: str
+    content: str
+    accessible_formats: List[str]
+
 # Routes
 @api_router.get("/")
 async def root():
