@@ -107,15 +107,18 @@ user_problem_statement: "Implement full Braille converter, multilingual translat
 backend:
   - task: "Translation API endpoint"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added /api/translate-content endpoint using Gemini API for Mandarin, Hindi, and Arabic translations. Uses TranslateRequest model with content and target_language parameters."
+      - working: true
+        agent: "testing"
+        comment: "✅ Translation API fully functional. Successfully tested all 3 languages (Mandarin, Hindi, Arabic) with proper translations. All required response fields present (translated_text, target_language, language_name). Existing endpoints (extract-pdf, simplify-content, generate-study-aids) working correctly. Minor: Empty content and invalid language codes are accepted instead of rejected, but core functionality works perfectly."
 
 frontend:
   - task: "Enhanced Braille converter with download"
