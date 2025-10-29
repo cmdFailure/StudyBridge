@@ -95,12 +95,26 @@ export const VideoUploader = ({ onVideoProcessed }) => {
         },
         body: JSON.stringify({ youtube_url: youtubeUrl }),
       });
+        // If server returned non-2xx, read the body and show the message if available.
+        if (!youtubeResponse.ok) {
+          let bodyText = await youtubeResponse.text();
+          // Try to parse JSON error detail if the server sent structured error
+          try {
+            const parsed = JSON.parse(bodyText);
+            // FastAPI commonly returns { detail: '...' }
+            const detail = parsed.detail || parsed.error || bodyText;
+            console.error('YouTube processing failed:', detail);
+            toast.error(detail.toString());
+          } catch (parseErr) {
+            console.error('YouTube processing failed:', bodyText);
+            toast.error(bodyText || 'YouTube processing failed');
+          }
+          // Stop processing since server responded with error
+          setIsProcessing(false);
+          return;
+        }
 
-      if (!youtubeResponse.ok) {
-        throw new Error('YouTube processing failed');
-      }
-
-      const youtubeData = await youtubeResponse.json();
+        const youtubeData = await youtubeResponse.json();
       toast.success('YouTube video downloaded! Transcribing...');
 
       // Transcribe video
