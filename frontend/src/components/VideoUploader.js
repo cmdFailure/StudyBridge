@@ -38,8 +38,17 @@ export const VideoUploader = ({ onVideoProcessed }) => {
         body: formData,
       });
 
+      const uploadClone = uploadResponse.clone();
+
       if (!uploadResponse.ok) {
-        throw new Error('Video upload failed');
+        let errorMessage = 'Video upload failed';
+        try {
+          const errorData = await uploadClone.json();
+          errorMessage = errorData.detail || errorData.error || errorMessage;
+        } catch (e) {
+          // If can't parse error, use default message
+        }
+        throw new Error(errorMessage);
       }
 
       const uploadData = await uploadResponse.json();
@@ -50,8 +59,17 @@ export const VideoUploader = ({ onVideoProcessed }) => {
         method: 'POST',
       });
 
+      const transcribeClone = transcribeResponse.clone();
+
       if (!transcribeResponse.ok) {
-        throw new Error('Video transcription failed');
+        let errorMessage = 'Video transcription failed';
+        try {
+          const errorData = await transcribeClone.json();
+          errorMessage = errorData.detail || errorData.error || errorMessage;
+        } catch (e) {
+          // If can't parse error, use default message
+        }
+        throw new Error(errorMessage);
       }
 
       const transcriptData = await transcribeResponse.json();
@@ -71,7 +89,7 @@ export const VideoUploader = ({ onVideoProcessed }) => {
 
     } catch (error) {
       console.error('Video processing error:', error);
-      toast.error('Failed to process video. Please try again.');
+      toast.error(error.message || 'Failed to process video. Please try again.');
     } finally {
       setIsProcessing(false);
     }
@@ -95,26 +113,22 @@ export const VideoUploader = ({ onVideoProcessed }) => {
         },
         body: JSON.stringify({ youtube_url: youtubeUrl }),
       });
-        // If server returned non-2xx, read the body and show the message if available.
-        if (!youtubeResponse.ok) {
-          let bodyText = await youtubeResponse.text();
-          // Try to parse JSON error detail if the server sent structured error
-          try {
-            const parsed = JSON.parse(bodyText);
-            // FastAPI commonly returns { detail: '...' }
-            const detail = parsed.detail || parsed.error || bodyText;
-            console.error('YouTube processing failed:', detail);
-            toast.error(detail.toString());
-          } catch (parseErr) {
-            console.error('YouTube processing failed:', bodyText);
-            toast.error(bodyText || 'YouTube processing failed');
-          }
-          // Stop processing since server responded with error
-          setIsProcessing(false);
-          return;
-        }
 
-        const youtubeData = await youtubeResponse.json();
+      // Clone response to avoid "body already used" error in monitored environments
+      const responseClone = youtubeResponse.clone();
+      
+      if (!youtubeResponse.ok) {
+        let errorMessage = 'YouTube processing failed';
+        try {
+          const errorData = await responseClone.json();
+          errorMessage = errorData.detail || errorData.error || errorMessage;
+        } catch (e) {
+          // If can't parse error, use default message
+        }
+        throw new Error(errorMessage);
+      }
+
+      const youtubeData = await youtubeResponse.json();
       toast.success('YouTube video downloaded! Transcribing...');
 
       // Transcribe video
@@ -122,8 +136,17 @@ export const VideoUploader = ({ onVideoProcessed }) => {
         method: 'POST',
       });
 
+      const transcribeClone = transcribeResponse.clone();
+
       if (!transcribeResponse.ok) {
-        throw new Error('Video transcription failed');
+        let errorMessage = 'Video transcription failed';
+        try {
+          const errorData = await transcribeClone.json();
+          errorMessage = errorData.detail || errorData.error || errorMessage;
+        } catch (e) {
+          // If can't parse error, use default message
+        }
+        throw new Error(errorMessage);
       }
 
       const transcriptData = await transcribeResponse.json();
@@ -145,7 +168,7 @@ export const VideoUploader = ({ onVideoProcessed }) => {
 
     } catch (error) {
       console.error('YouTube processing error:', error);
-      toast.error('Failed to process YouTube video. Please try again.');
+      toast.error(error.message || 'Failed to process YouTube video. Please try again.');
     } finally {
       setIsProcessing(false);
     }
