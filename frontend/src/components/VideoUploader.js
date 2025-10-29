@@ -38,20 +38,14 @@ export const VideoUploader = ({ onVideoProcessed }) => {
         body: formData,
       });
 
-      const uploadClone = uploadResponse.clone();
+      // Read response body first (before checking ok status)
+      const uploadData = await uploadResponse.json();
 
       if (!uploadResponse.ok) {
-        let errorMessage = 'Video upload failed';
-        try {
-          const errorData = await uploadClone.json();
-          errorMessage = errorData.detail || errorData.error || errorMessage;
-        } catch (e) {
-          // If can't parse error, use default message
-        }
+        const errorMessage = uploadData.detail || uploadData.error || 'Video upload failed';
         throw new Error(errorMessage);
       }
 
-      const uploadData = await uploadResponse.json();
       toast.success('Video uploaded! Transcribing...');
 
       // Transcribe video
@@ -59,20 +53,13 @@ export const VideoUploader = ({ onVideoProcessed }) => {
         method: 'POST',
       });
 
-      const transcribeClone = transcribeResponse.clone();
+      // Read response body first
+      const transcriptData = await transcribeResponse.json();
 
       if (!transcribeResponse.ok) {
-        let errorMessage = 'Video transcription failed';
-        try {
-          const errorData = await transcribeClone.json();
-          errorMessage = errorData.detail || errorData.error || errorMessage;
-        } catch (e) {
-          // If can't parse error, use default message
-        }
+        const errorMessage = transcriptData.detail || transcriptData.error || 'Video transcription failed';
         throw new Error(errorMessage);
       }
-
-      const transcriptData = await transcribeResponse.json();
       
       // Get video URL
       const videoUrl = `${BACKEND_URL}/api/video-file/${uploadData.video_id}`;
@@ -114,21 +101,15 @@ export const VideoUploader = ({ onVideoProcessed }) => {
         body: JSON.stringify({ youtube_url: youtubeUrl }),
       });
 
-      // Clone response to avoid "body already used" error in monitored environments
-      const responseClone = youtubeResponse.clone();
+      // Read response body first (before checking ok status)
+      // This prevents "body already used" error in monitored environments
+      const youtubeData = await youtubeResponse.json();
       
       if (!youtubeResponse.ok) {
-        let errorMessage = 'YouTube processing failed';
-        try {
-          const errorData = await responseClone.json();
-          errorMessage = errorData.detail || errorData.error || errorMessage;
-        } catch (e) {
-          // If can't parse error, use default message
-        }
+        const errorMessage = youtubeData.detail || youtubeData.error || 'YouTube processing failed';
         throw new Error(errorMessage);
       }
 
-      const youtubeData = await youtubeResponse.json();
       toast.success('YouTube video downloaded! Transcribing...');
 
       // Transcribe video
@@ -136,20 +117,13 @@ export const VideoUploader = ({ onVideoProcessed }) => {
         method: 'POST',
       });
 
-      const transcribeClone = transcribeResponse.clone();
+      // Read response body first
+      const transcriptData = await transcribeResponse.json();
 
       if (!transcribeResponse.ok) {
-        let errorMessage = 'Video transcription failed';
-        try {
-          const errorData = await transcribeClone.json();
-          errorMessage = errorData.detail || errorData.error || errorMessage;
-        } catch (e) {
-          // If can't parse error, use default message
-        }
+        const errorMessage = transcriptData.detail || transcriptData.error || 'Video transcription failed';
         throw new Error(errorMessage);
       }
-
-      const transcriptData = await transcribeResponse.json();
       
       // Get video URL
       const videoUrl = `${BACKEND_URL}/api/video-file/${youtubeData.video_id}`;
