@@ -30,6 +30,9 @@ gemini_key = os.environ.get('GEMINI_API_KEY', '')
 if gemini_key:
     genai.configure(api_key=gemini_key)
 
+# yt-dlp cookies file path (optional). Set environment variable YTDLP_COOKIES_FILE to the path
+YTDLP_COOKIES_FILE = os.environ.get('YTDLP_COOKIES_FILE')
+
 # Create the main app
 app = FastAPI()
 api_router = APIRouter(prefix="/api")
@@ -334,11 +337,37 @@ async def process_youtube(request: YouTubeRequest):
             'no_warnings': True,
             'max_filesize': 100 * 1024 * 1024,  # 100MB limit
         }
-        
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(request.youtube_url, download=True)
-            title = info.get('title', 'YouTube Video')
-            duration = info.get('duration', 0)
+
+        # If server operator provided a cookies file (useful for age-restricted or bot-checked videos),
+        # pass it to yt-dlp via the 'cookiefile' option.
+        if YTDLP_COOKIES_FILE:
+            cookie_path = Path(YTDLP_COOKIES_FILE)
+            if cookie_path.exists():
+                ydl_opts['cookiefile'] = str(cookie_path)
+            else:
+                logging.warning(f"YTDLP_COOKIES_FILE is set but file not found: {YTDLP_COOKIES_FILE}")
+
+        try:
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(request.youtube_url, download=True)
+                title = info.get('title', 'YouTube Video')
+                duration = info.get('duration', 0)
+        except yt_dlp.utils.DownloadError as de:
+            # Detect common YouTube sign-in / bot-check message and return a helpful error
+            msg = str(de)
+            logging.error(f"yt-dlp download error: {msg}")
+            if 'Sign in to confirm' in msg or 'Sign in to confirm you' in msg or 'Sign in' in msg:
+                detail = (
+                    "YouTube requires sign-in / cookies for this video. "
+                    "Set the environment variable YTDLP_COOKIES_FILE to a cookies.txt file exported from your browser, "
+                    "or use yt-dlp's --cookies-from-browser / --cookies options. See: "
+                    "https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp and "
+                    "https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies"
+                )
+                raise HTTPException(status_code=400, detail=detail)
+            else:
+                # Re-raise as HTTP 500 for other download issues
+                raise HTTPException(status_code=500, detail=f"yt-dlp download error: {msg}")
         
         logging.info(f"YouTube video downloaded: {output_path}")
         
@@ -350,6 +379,9 @@ async def process_youtube(request: YouTubeRequest):
             "message": "YouTube video processed successfully"
         }
         
+    except HTTPException:
+        # Re-raise HTTPExceptions we intentionally threw above
+        raise
     except Exception as e:
         logging.error(f"YouTube processing error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error processing YouTube video: {str(e)}")
